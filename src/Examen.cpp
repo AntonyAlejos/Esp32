@@ -1,47 +1,20 @@
 #include "Examen.h"
 
-Examen::Examen() {
-    temperatura = 0.0;
-    frecuenciaCardiaca = 0;
-    spo2 = 0;
-    fecha = "";
-    presion=0;
-}
+Examen::Examen() {}
 
-float Examen::getTemperatura() {
-    return temperatura;
-}
-
-int Examen::getFrecuenciaCardiaca() {
-    return frecuenciaCardiaca;
-}
-
-int Examen::getSpo2() {
-    return spo2;
-}
-String Examen::getFecha() {
-    return fecha;
-}
-int Examen::getPresion(){
-    return presion;}
-
-void Examen::setTemperatura(float temp) {
-    temperatura = temp;
-}
-
-void Examen::setFrecuencia(int f) {
-    frecuenciaCardiaca = f;
-}
-
-void Examen::setSpo2(int s) {
-    spo2 = s;
-}
-
-void Examen::setFecha(String f) {
-    fecha = f;}
-    
-void Examen::setPresion(int p) {
-    presion = p;
-}
+void Examen::setFecha(String fech){fecha=fech;}
+void Examen::setOxigeno(float ox ) {oxigeno = ox;}
+void Examen::setPulso(float pul){pulso=pul;}
+void Examen::setTemperatura(float temp){temperatura=temp;}
+void Examen::setPresionS(float pressS){pSistolica=pressS;}
+void Examen::setPresionD(float pressD){pDiastolica=pressD;}
+void Examen::setDiagnostico(String d){diagnostico=d;}
 
 
+String Examen::getFecha(){return fecha;}
+float Examen::getOxigeno(){return oxigeno;}
+float Examen::getPulso(){return pulso;}
+float Examen::getTemperatura(){return temperatura;}
+float Examen::getPresionS(){return pSistolica;}
+float Examen::getPresionD(){return pDiastolica;}
+String Examen::getdiagnostico(){return diagnostico;}

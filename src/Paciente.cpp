@@ -1,20 +1,23 @@
 #include "Paciente.h"
 //Constructor
-Paciente::Paciente() {
-    nombre = "";
-    apellido = "";
-    id = 0;
-}
+Paciente::Paciente() {}
 
 //geters
 
 String Paciente::getNombre(){return nombre;}
 String Paciente::getApellido(){return apellido;}
-int Paciente::getID(){return id;}
-Examen & Paciente::getExamen(){return examen;}
-
+int Paciente::getEdad(){return edad;}
+char Paciente::getSexo(){return sexo;}
+String Paciente::getDomicilio(){return domicilio;}
+String Paciente::getTelefono(){return telefono;}
+String Paciente::getContactoEmerg(){return contactoEmerg;}
+Examen& Paciente::getExamen(){return examen;}
 //Seters
-
 void Paciente::setNombre(String n){nombre=n;}
 void Paciente::setApellido(String a){apellido=a;}
-void Paciente::setID(int i){id=i;}
+void Paciente::setEdad(int ed){edad=ed;}
+void Paciente::setSexo(char s){sexo=s;}
+void Paciente::setDomicilio(String d){domicilio=d;}
+void Paciente::setTelefono(String t){telefono=t;}
+void Paciente::setContactoEmerg(String CE){contactoEmerg=CE;}
+void Paciente::setExamen(Examen ex){examen=ex;}

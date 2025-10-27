@@ -12,6 +12,5 @@ class FichaMedica{
         void limpiarFichaMedica();
     
     private:
-        
 };
 #endif

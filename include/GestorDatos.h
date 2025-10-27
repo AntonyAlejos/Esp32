@@ -9,7 +9,7 @@ class GestorDatos {
 public:
     GestorDatos(FichaMedica&);
 
-    bool recibirDesdeSerial(Paciente &paciente);
+    bool recibirDesdeSerial(String &linea);
     void guardarEnSD(Paciente &paciente);
     String enviarATelegram(Paciente &paciente);
     Paciente parsearDesdeCSV(const String& linea);

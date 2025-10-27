@@ -6,25 +6,21 @@ GestorDatos::GestorDatos(FichaMedica& ficha):ficha(ficha){
     // Podés inicializar SD, WiFi, etc. aquí si querés
 }
 
-bool GestorDatos::recibirDesdeSerial(Paciente &paciente) {
+bool GestorDatos::recibirDesdeSerial(String &linea) {
     if (Serial2.available()) {
-        String linea = Serial2.readStringUntil('\n');
+        linea = Serial2.readStringUntil('\n');
         linea.trim();
-
-        if (linea.length() > 0) {
-            paciente = parsearDesdeCSV(linea);
-            return true;
-        }
+        return(linea.length()>0);
     }
     return false;
 }
 
 Paciente GestorDatos::parsearDesdeCSV(const String& lineaOriginal) {
-    String partes[7];
+    String partes[13];
     int index = 0;
     String linea = lineaOriginal;
 
-    while (index < 7) {
+    while (index < 13) {
         int pos = linea.indexOf(',');
         if (pos == -1) {
             partes[index++] = linea;
@@ -37,11 +33,32 @@ Paciente GestorDatos::parsearDesdeCSV(const String& lineaOriginal) {
     Paciente p;
     p.setNombre(partes[0]);
     p.setApellido(partes[1]);
-    p.setID(partes[2].toInt());
-    (p.getExamen()).setTemperatura(partes[3].toFloat());
-    (p.getExamen()).setFrecuencia(partes[4].toInt()); 
-    (p.getExamen()).setSpo2( partes[5].toInt());
-    (p.getExamen()).setFecha(partes[6]);
+    p.setEdad(partes[2].toInt());
+    p.setSexo(partes[3][0]);
+    p.setDomicilio(partes[4]);
+    p.setTelefono(partes[5]);
+    p.setContactoEmerg(partes[6]);
+
+    Examen ex;
+    ex.setFecha(partes[7]);
+    ex.setOxigeno(partes[8].toFloat());
+    ex.setPulso(partes[9].toFloat());
+    ex.setTemperatura(partes[10].toFloat());
+    ex.setPresionS(partes[11].toFloat());
+    ex.setPresionD(partes[12].toFloat());
+    //ex.setDiagnostico(partes[13]);
+    Serial.println("=== CSV recibido ===");
+    Serial.println(lineaOriginal);
+    for (int i = 0; i < 13; i++) {
+    Serial.print("Parte ");
+    Serial.print(i);
+    Serial.print(": [");
+    Serial.print(partes[i]);
+    Serial.println("]");
+}
+
+
+    p.setExamen(ex);
     return p;
 }
 
@@ -50,13 +67,15 @@ void GestorDatos::guardarEnSD(  Paciente &paciente) {
     File file = SD.open("/registros.csv",FILE_WRITE);
    
     if (file) {
-        file.printf("%s,%s,%d,%.1f,%d,%d,%s\n",
+        file.printf("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%s\n",
             paciente.getNombre().c_str(),
             paciente.getApellido().c_str(),
-            paciente.getID(),
+            paciente.getEdad(),
+            paciente.getExamen().getOxigeno(),
+            paciente.getExamen().getPulso(),
             paciente.getExamen().getTemperatura(),
-            paciente.getExamen().getFrecuenciaCardiaca(),
-            paciente.getExamen().getSpo2(),
+            paciente.getExamen().getPresionS(),
+            paciente.getExamen().getPresionD(),
             paciente.getExamen().getFecha().c_str()
         );
         file.close();

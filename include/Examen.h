@@ -8,23 +8,29 @@ class Examen{
         Examen();
         //metodos para calcular diferentes valores medicos.
         //metodos para limpiar. 
-        void setTemperatura(float temp);
-        void setFrecuencia(int frc);
-        void setSpo2(int SPO2);
         void setFecha(String fech);
-        void setPresion(int press);
+        void setOxigeno(float ox);
+        void setPulso(float pul);
+        void setTemperatura(float temp);
+        void setPresionS(float pressS);
+        void setPresionD(float pressD);
+        void setDiagnostico(String d);
 
-        float getTemperatura();
-        int getFrecuenciaCardiaca();
-        int getSpo2();
         String getFecha();
-        int getPresion();
+        float getOxigeno();
+        float getPulso();
+        float getTemperatura();
+        float getPresionS();
+        float getPresionD();
+        String getdiagnostico();
     private:
-        float temperatura;
-        int frecuenciaCardiaca;
-        int spo2;
         String fecha;
-        int presion;
-
+        float oxigeno;
+        float pulso;
+        float temperatura;
+        float pSistolica;
+        float pDiastolica;
+        String diagnostico;
+        
 };
 #endif

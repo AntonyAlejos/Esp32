@@ -1,9 +1,11 @@
+#include <Wire.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <UniversalTelegramBot.h>
 #include "GestorDatos.h"
 #include "FichaMedica.h"
 #include "Paciente.h"
+#include "SensorMAX30102.h"
 
 // 🔹 Pines para comunicación con Arduino
 #define RXD2 16
@@ -20,6 +22,7 @@ UniversalTelegramBot bot(BOTtoken, client);
 FichaMedica ficha;
 Paciente paciente;
 GestorDatos gestorData(ficha);
+SensorMAX30102 sensor;
 
 
 void setup() {
@@ -34,15 +37,39 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {}
   digitalWrite(2, HIGH);                      // LED indica conexión
   client.setInsecure();    
-  // Configura conexión segura
+  // Configuracion sensor
 }
 
-
+String linea;
+String csv;
+bool esperandoCSV=false;
 void loop() {
-  if(gestorData.recibirDesdeSerial(paciente)){
-  
-    bot.sendMessage(CHAT_ID,gestorData.enviarATelegram(paciente));
-    gestorData.guardarEnSD(paciente);
+  linea="";
+  if(gestorData.recibirDesdeSerial(linea)){
+    linea.trim();
+    if(linea=="0"){
+      esperandoCSV=true;      
+    }
+
+    else if(linea=="-1"){
+      //caso -1 enviar oxigeno
+      int oxigeno =sensor.getOxigeno();
+      Serial2.println(String(oxigeno));
+    }
+    else if(linea=="1")
+    {//caso 1 enviar pulso
+      int pulso =sensor.getPulso();
+      Serial2.println(String(pulso));
+    }
   }
+  if(esperandoCSV) {
+    if(gestorData.recibirDesdeSerial(csv)) {
+        csv.trim();
+        paciente = gestorData.parsearDesdeCSV(csv);
+        bot.sendMessage(CHAT_ID, gestorData.enviarATelegram(paciente));
+        gestorData.guardarEnSD(paciente);
+        esperandoCSV = false; // ya procesamos
+    }
+}
 }
 
