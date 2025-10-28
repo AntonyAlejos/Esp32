@@ -11,8 +11,8 @@
 #define RXD2 16
 #define TXD2 17
 // 🔹 Datos Wi-fi  y Telegram
-const char* ssid = "CASA WIFI";
-const char* password = "95126239.com";
+const char* ssid = "Motorola";
+const char* password = "123456789";
 #define BOTtoken "8471480578:AAHIdrL2tU2llz_uO55NRJwQfn877mYrppc" //bot_token
 #define CHAT_ID "7050184014"                                      // tu chat ID
 WiFiClientSecure client;
@@ -60,6 +60,16 @@ void loop() {
     {//caso 1 enviar pulso
       int pulso =sensor.getPulso();
       Serial2.println(String(pulso));
+    }
+    else if(linea=="2")
+    {
+      String SOS;
+      SOS="🚨🚨 *EMERGENCIA DETECTADA* 🚨🚨\n\n"
+               "⚠️ Solicitud de ayuda desde el dispositivo del paciente.\n"
+               "🏥 Intervención requerida *inmediatamente*.\n\n"
+               "📞 Contacte o asista al paciente ya.";
+      bot.sendMessage(CHAT_ID,SOS);
+
     }
   }
   if(esperandoCSV) {
